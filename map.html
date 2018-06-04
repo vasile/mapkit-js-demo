@@ -6,13 +6,9 @@
 <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
 
 <style>
-html, body {
-    height: 100%;
-    margin: 0;
-}
-
 #map {
-    min-height: 100%;
+    width: 100%;
+    height: 800px;
     background-color: lightgrey;
 }
 </style>
@@ -64,7 +60,7 @@ html, body {
     mapkit.init({
         // If you plan to use this code please use your own JWT key
         authorizationCallback: function(done) {
-            done("eyJhbGciOiJFUzI1NiIsImFsZyI6IkVTMjU2Iiwia2lkIjoiSEc2NlNGNlJBViJ9.eyJpc3MiOiI2M05HRDc0R040IiwiaWF0IjoxNTI4MTQ5MzcyLCJleHAiOjE1MzA3NDEzNzJ9.X1K60YQ-iKVNXJXnTWPeehJl03Dpg0fPrkAkSK8DdyC79XGIe3AstNd1IoGOdXMkQOg2EVxlZAwRJH91MXkntQ");
+            done("eyJhbGciOiJFUzI1NiIsImFsZyI6IkVTMjU2Iiwia2lkIjoiSEc2NlNGNlJBViJ9.eyJpc3MiOiI2M05HRDc0R040IiwiaWF0IjoxNTI4MTU1NjY3LCJleHAiOjE1MzA3NDc2Njd9.kZ-TfSoK-Fm2Nmu9t3sTocAX8uKYyZtX-UreMokpFOR5nfD14CjvwOYHB95aNsWWfnA6kSq6639UXzPVqctcMw");
         },
         language: "en"
     });
