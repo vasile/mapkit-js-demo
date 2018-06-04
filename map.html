@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+
+<style>
+#map {
+    width: 100%;
+    height: 800px;
+}
+</style>
+
+</head>
+
+<body>
+<div id="map"></div>
+        
+<script>
+    function directionsHandler(error, data) {
+        data["routes"].forEach(function(route, routeIdx) {
+            if (routeIdx !== 0) { return; }
+
+            map.removeOverlays(overlays);
+
+            let firstPath = route['path'][0];
+            let lastPath = route['path'][route['path'].length - 1];
+            pointA.coordinate = firstPath[0];
+            pointB.coordinate = lastPath[lastPath.length - 1];
+
+            overlays = [];
+
+            route['path'].forEach(function(path) {
+                let overlayStyle = new mapkit.Style({
+                    lineWidth: 5,
+                    strokeColor: "#0000FF"
+                });
+                let overlay = new mapkit.PolylineOverlay(path, {
+                    style: overlayStyle
+                });
+                overlays.push(overlay);
+            });
+
+            map.addOverlays(overlays);
+        });
+    }
+
+    function computeDirections() {
+        let directionsOptions = { 
+            origin: pointA.coordinate, 
+            destination: pointB.coordinate, 
+            transportType: mapkit.Directions.Transport.Automobile 
+        };
+
+        directions.route(directionsOptions, directionsHandler);
+    }
+
+    mapkit.init({
+        // If you plan to use this code please use your own JWT key
+        authorizationCallback: function(done) {
+            done("eyJhbGciOiJFUzI1NiIsImFsZyI6IkVTMjU2Iiwia2lkIjoiSEc2NlNGNlJBViJ9.eyJpc3MiOiI2M05HRDc0R040IiwiaWF0IjoxNTI4MTQ5MzcyLCJleHAiOjE1MzA3NDEzNzJ9.X1K60YQ-iKVNXJXnTWPeehJl03Dpg0fPrkAkSK8DdyC79XGIe3AstNd1IoGOdXMkQOg2EVxlZAwRJH91MXkntQ");
+        },
+        language: "en"
+    });
+
+    var region = new mapkit.CoordinateRegion(
+        new mapkit.Coordinate(47.163, 8.009),
+        new mapkit.CoordinateSpan(0.717, 1.771)
+    );
+    
+    var map = new mapkit.Map("map", {
+        center: new mapkit.Coordinate(47.3769, 8.5417),
+        region: region,
+        showsUserLocation: true
+    });
+
+    var pointA = new mapkit.MarkerAnnotation(new mapkit.Coordinate(47.365, 8.549), {
+        draggable: true,
+        selected: true,
+        title: "START - DRAG ME",
+        color: '#1ecf1a'
+    });
+    var pointB = new mapkit.MarkerAnnotation(new mapkit.Coordinate(46.959, 7.468), {
+        draggable: true,
+        selected: true,
+        title: "END - DRAG ME"
+    });
+    map.addAnnotations([pointA, pointB]);
+
+    pointA.addEventListener("drag-end", computeDirections);
+    pointB.addEventListener("drag-end", computeDirections);
+
+    var overlays = [];
+
+    var directions = new mapkit.Directions();
+    computeDirections();
+</script>
+</body>
+</html>
