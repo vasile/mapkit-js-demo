@@ -6,11 +6,25 @@
 <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
 
 <style>
-#map {
+html, body, div {
+    /* Height and width fallback for older browsers. */
+    height: 100%;
     width: 100%;
-    height: 800px;
-    background-color: lightgrey;
+    
+    /* Set the height to match that of the viewport. */
+    height: 100vh;
+    
+    /* Set the width to match that of the viewport. */
+    width: 100vw;
+    
+    /* Remove any browser-default margins. */
+    margin: 0;
 }
+
+#map {
+    background: lightgrey;
+}
+    
 </style>
 
 </head>
