@@ -92,7 +92,7 @@ body {
 
     var region = new mapkit.CoordinateRegion(
         new mapkit.Coordinate(47.163, 8.009),
-        new mapkit.CoordinateSpan(0.717, 1.771)
+        new mapkit.CoordinateSpan(1, 1)
     );
     
     var map = new mapkit.Map("map", {
@@ -122,6 +122,25 @@ body {
 
     var directions = new mapkit.Directions();
     computeDirections();
+
+    mapkit.importGeoJSON('swiss-mask.geojson', function(error, result){
+        result.items.forEach(function(overlay){
+            var style = new mapkit.Style({
+                strokeColor: "#000",
+                strokeOpacity: 0.8,
+                lineWidth: 1,
+                fillOpacity: .8,
+                fillColor: '#CACACA',
+            });
+
+            // TODO - use GeoJSONDelegate
+            // https://developer.apple.com/documentation/mapkitjs/geojsondelegate
+            Object.assign(mapkit.PolygonOverlay, overlay);
+            overlay.style = style;
+            map.addOverlay(overlay);
+        });
+    });
+
 </script>
 </body>
 </html>
