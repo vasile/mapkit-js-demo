@@ -123,23 +123,32 @@ body {
     var directions = new mapkit.Directions();
     computeDirections();
 
-    mapkit.importGeoJSON('swiss-mask.geojson', function(error, result){
-        result.items.forEach(function(overlay){
-            var style = new mapkit.Style({
+    let geoJSONParserDelegate = {
+        itemForPolygon: function(overlay, json) {
+            overlay.style = new mapkit.Style({
                 strokeColor: "#000",
                 strokeOpacity: 0.8,
                 lineWidth: 1,
                 fillOpacity: .8,
                 fillColor: '#CACACA',
             });
-
-            // TODO - use GeoJSONDelegate
-            // https://developer.apple.com/documentation/mapkitjs/geojsondelegate
-            Object.assign(mapkit.PolygonOverlay, overlay);
-            overlay.style = style;
             map.addOverlay(overlay);
-        });
-    });
+
+            return overlay;
+        },
+        geoJSONDidComplete: function(result, geoJSON) {
+            console.log('GeoJSONDelegate.geoJSONDidComplete');
+            console.log(result);
+            console.log(geoJSON);
+        },
+        geoJSONDidError: function(error, geoJSON) {
+            console.log('GeoJSONDelegate.geoJSONDidError');
+            console.log(error);
+            console.log(geoJSON);
+        }
+    };
+
+    mapkit.importGeoJSON('swiss-mask.geojson', geoJSONParserDelegate);
 
 </script>
 </body>
